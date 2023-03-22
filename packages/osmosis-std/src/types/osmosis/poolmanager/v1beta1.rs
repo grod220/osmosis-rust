@@ -84,6 +84,9 @@ pub enum PoolType {
     /// Stableswap is the Solidly cfmm stable swap curve. Its pool model is defined
     /// in x/gamm.
     Stableswap = 1,
+    /// Concentrated is the pool model specific to concentrated liquidity. It is
+    /// defined in x/concentrated-liquidity.
+    Concentrated = 2,
 }
 impl PoolType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -94,6 +97,7 @@ impl PoolType {
         match self {
             PoolType::Balancer => "Balancer",
             PoolType::Stableswap => "Stableswap",
+            PoolType::Concentrated => "Concentrated",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -101,6 +105,7 @@ impl PoolType {
         match value {
             "Balancer" => Some(Self::Balancer),
             "Stableswap" => Some(Self::Stableswap),
+            "Concentrated" => Some(Self::Concentrated),
             _ => None,
         }
     }
