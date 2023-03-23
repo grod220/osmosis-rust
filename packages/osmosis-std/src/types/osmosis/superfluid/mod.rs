@@ -1136,6 +1136,8 @@ pub struct MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionResponse {
     pub amount1: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
     pub liquidity_created: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "4")]
+    pub join_time: ::core::option::Option<crate::shim::Timestamp>,
 }
 pub struct SuperfluidQuerier<'a, Q: cosmwasm_std::CustomQuery> {
     querier: &'a cosmwasm_std::QuerierWrapper<'a, Q>,

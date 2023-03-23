@@ -402,6 +402,137 @@ pub struct NumPoolsResponse {
     )]
     pub num_pools: u64,
 }
+/// =============================== Pool
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(
+    Clone,
+    PartialEq,
+    Eq,
+    ::prost::Message,
+    ::serde::Serialize,
+    ::serde::Deserialize,
+    ::schemars::JsonSchema,
+    CosmwasmExt,
+)]
+#[proto_message(type_url = "/osmosis.poolmanager.v1beta1.PoolRequest")]
+#[proto_query(
+    path = "/osmosis.poolmanager.v1beta1.Query/Pool",
+    response_type = PoolResponse
+)]
+pub struct PoolRequest {
+    #[prost(uint64, tag = "1")]
+    #[serde(
+        serialize_with = "crate::serde::as_str::serialize",
+        deserialize_with = "crate::serde::as_str::deserialize"
+    )]
+    pub pool_id: u64,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(
+    Clone,
+    PartialEq,
+    Eq,
+    ::prost::Message,
+    ::serde::Serialize,
+    ::serde::Deserialize,
+    ::schemars::JsonSchema,
+    CosmwasmExt,
+)]
+#[proto_message(type_url = "/osmosis.poolmanager.v1beta1.PoolResponse")]
+pub struct PoolResponse {
+    #[prost(message, optional, tag = "1")]
+    pub pool: ::core::option::Option<crate::shim::Any>,
+}
+/// =============================== AllPools
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(
+    Clone,
+    PartialEq,
+    Eq,
+    ::prost::Message,
+    ::serde::Serialize,
+    ::serde::Deserialize,
+    ::schemars::JsonSchema,
+    CosmwasmExt,
+)]
+#[proto_message(type_url = "/osmosis.poolmanager.v1beta1.AllPoolsRequest")]
+#[proto_query(
+    path = "/osmosis.poolmanager.v1beta1.Query/AllPools",
+    response_type = AllPoolsResponse
+)]
+pub struct AllPoolsRequest {
+    #[prost(uint64, tag = "1")]
+    #[serde(
+        serialize_with = "crate::serde::as_str::serialize",
+        deserialize_with = "crate::serde::as_str::deserialize"
+    )]
+    pub pool_id: u64,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(
+    Clone,
+    PartialEq,
+    Eq,
+    ::prost::Message,
+    ::serde::Serialize,
+    ::serde::Deserialize,
+    ::schemars::JsonSchema,
+    CosmwasmExt,
+)]
+#[proto_message(type_url = "/osmosis.poolmanager.v1beta1.AllPoolsResponse")]
+pub struct AllPoolsResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub pools: ::prost::alloc::vec::Vec<crate::shim::Any>,
+}
+/// SpotPriceRequest defines the gRPC request structure for a SpotPrice
+/// query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(
+    Clone,
+    PartialEq,
+    Eq,
+    ::prost::Message,
+    ::serde::Serialize,
+    ::serde::Deserialize,
+    ::schemars::JsonSchema,
+    CosmwasmExt,
+)]
+#[proto_message(type_url = "/osmosis.poolmanager.v1beta1.SpotPriceRequest")]
+#[proto_query(
+    path = "/osmosis.poolmanager.v1beta1.Query/SpotPrice",
+    response_type = SpotPriceResponse
+)]
+pub struct SpotPriceRequest {
+    #[prost(uint64, tag = "1")]
+    #[serde(
+        serialize_with = "crate::serde::as_str::serialize",
+        deserialize_with = "crate::serde::as_str::deserialize"
+    )]
+    pub pool_id: u64,
+    #[prost(string, tag = "2")]
+    pub base_asset_denom: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub quote_asset_denom: ::prost::alloc::string::String,
+}
+/// SpotPriceResponse defines the gRPC response structure for a SpotPrice
+/// query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(
+    Clone,
+    PartialEq,
+    Eq,
+    ::prost::Message,
+    ::serde::Serialize,
+    ::serde::Deserialize,
+    ::schemars::JsonSchema,
+    CosmwasmExt,
+)]
+#[proto_message(type_url = "/osmosis.poolmanager.v1beta1.SpotPriceResponse")]
+pub struct SpotPriceResponse {
+    /// String of the Dec. Ex) 10.203uatom
+    #[prost(string, tag = "1")]
+    pub spot_price: ::prost::alloc::string::String,
+}
 pub struct PoolmanagerQuerier<'a, Q: cosmwasm_std::CustomQuery> {
     querier: &'a cosmwasm_std::QuerierWrapper<'a, Q>,
 }
@@ -444,5 +575,24 @@ impl<'a, Q: cosmwasm_std::CustomQuery> PoolmanagerQuerier<'a, Q> {
     }
     pub fn num_pools(&self) -> Result<NumPoolsResponse, cosmwasm_std::StdError> {
         NumPoolsRequest {}.query(self.querier)
+    }
+    pub fn pool(&self, pool_id: u64) -> Result<PoolResponse, cosmwasm_std::StdError> {
+        PoolRequest { pool_id }.query(self.querier)
+    }
+    pub fn all_pools(&self, pool_id: u64) -> Result<AllPoolsResponse, cosmwasm_std::StdError> {
+        AllPoolsRequest { pool_id }.query(self.querier)
+    }
+    pub fn spot_price(
+        &self,
+        pool_id: u64,
+        base_asset_denom: ::prost::alloc::string::String,
+        quote_asset_denom: ::prost::alloc::string::String,
+    ) -> Result<SpotPriceResponse, cosmwasm_std::StdError> {
+        SpotPriceRequest {
+            pool_id,
+            base_asset_denom,
+            quote_asset_denom,
+        }
+        .query(self.querier)
     }
 }

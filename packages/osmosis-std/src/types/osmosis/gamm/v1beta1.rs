@@ -646,6 +646,7 @@ pub struct MsgExitSwapExternAmountOutResponse {
     pub share_in_amount: ::prost::alloc::string::String,
 }
 /// =============================== Pool
+/// Deprecated: please use the alternative in x/poolmanager
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(
     Clone,
@@ -662,6 +663,7 @@ pub struct MsgExitSwapExternAmountOutResponse {
     path = "/osmosis.gamm.v1beta1.Query/Pool",
     response_type = QueryPoolResponse
 )]
+#[deprecated]
 pub struct QueryPoolRequest {
     #[prost(uint64, tag = "1")]
     #[serde(
@@ -670,6 +672,7 @@ pub struct QueryPoolRequest {
     )]
     pub pool_id: u64,
 }
+/// Deprecated: please use the alternative in x/poolmanager
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(
     Clone,
@@ -682,6 +685,7 @@ pub struct QueryPoolRequest {
     CosmwasmExt,
 )]
 #[proto_message(type_url = "/osmosis.gamm.v1beta1.QueryPoolResponse")]
+#[deprecated]
 pub struct QueryPoolResponse {
     #[prost(message, optional, tag = "1")]
     pub pool: ::core::option::Option<crate::shim::Any>,
@@ -1332,6 +1336,7 @@ impl<'a, Q: cosmwasm_std::CustomQuery> GammQuerier<'a, Q> {
         }
         .query(self.querier)
     }
+    #[deprecated]
     pub fn pool(&self, pool_id: u64) -> Result<QueryPoolResponse, cosmwasm_std::StdError> {
         QueryPoolRequest { pool_id }.query(self.querier)
     }
